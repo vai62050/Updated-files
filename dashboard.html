@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Flora Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background: #f8f9fa;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #343a40;
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-family: 'Alata', sans-serif;
+            color: #007BFF;
+            text-align: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #495057;
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: #adb5bd;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #007BFF;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 2rem;
+            width: calc(100% - 250px);
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-header h1 {
+            margin: 0;
+            color: #343a40;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #007BFF;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .content-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-card h2 {
+            margin: 0 0 1rem 0;
+            color: #343a40;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-low {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-medium {
+            background: #ffc107;
+            color: black;
+        }
+
+        .status-good {
+            background: #28a745;
+            color: white;
+        }
+
+        .chart {
+            width: 100%;
+            height: 300px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+
+            .logo span, .nav-link span {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <span>Flora Hub</span>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#dashboard" class="nav-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#inventory" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    <span>Inventory</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#orders" class="nav-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#customers" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#products" class="nav-link">
+                    <i class="fas fa-leaf"></i>
+                    <span>Products</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#payments" class="nav-link">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#reviews" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Reviews</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#settings" class="nav-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="dashboard-header">
+            <h1>Dashboard Overview</h1>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Revenue</h3>
+                <div class="stat-value">₹45,678</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <div class="stat-value">234</div>
+            </div>
+            <div class="stat-card">
+                <h3>Active Customers</h3>
+                <div class="stat-value">1,234</div>
+            </div>
+            <div class="stat-card">
+                <h3>Products</h3>
+                <div class="stat-value">89</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="content-card">
+                <h2><i class="fas fa-box"></i> Low Stock Alert</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Stock</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rose Plant</td>
+                                <td>5</td>
+                                <td><span class="status-badge status-low">Low</span></td>
+                            </tr>
+                            <tr>
+                                <td>Snake Plant</td>
+                                <td>15</td>
+                                <td><span class="status-badge status-medium">Medium</span></td>
+                            </tr>
+                            <tr>
+                                <td>Money Plant</td>
+                                <td>45</td>
+                                <td><span class="status-badge status-good">Good</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2><i class="fas fa-shopping-cart"></i> Recent Orders</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#FH123</td>
+                                <td>John Doe</td>
+                                <td>₹748</td>
+                                <td><span class="status-badge status-good">Delivered</span></td>
+                            </tr>
+                            <tr>
+                                <td>#FH124</td>
+                                <td>Jane Smith</td>
+                                <td>₹299</td>
+                                <td><span class="status-badge status-medium">Processing</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2><i class="fas fa-chart-line"></i> Sales Analytics</h2>
+                <div class="chart">
+                    <!-- Placeholder for chart -->
+                    <p>Sales Chart Will Be Displayed Here</p>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <h2><i class="fas fa-star"></i> Recent Reviews</h2>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Customer</th>
+                                <th>Rating</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Rose Plant</td>
+                                <td>John Doe</td>
+                                <td>⭐⭐⭐⭐⭐</td>
+                            </tr>
+                            <tr>
+                                <td>Snake Plant</td>
+                                <td>Jane Smith</td>
+                                <td>⭐⭐⭐⭐</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add active class to current nav item
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
